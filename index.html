@@ -1,0 +1,90 @@
+<html>
+<head>
+    <script src="canvasjs.min.js"></script>
+    <script>
+        window.onload = () => {
+            var binary = window.convertToBinary(window.word);
+            //var binary = '010011';
+            var splitedBinary = binary.split('');
+
+            var tax = ((1 / 64000) / 2);
+            var points = 0;
+
+            var dPoints = 
+            [
+                {x: 0, y: 0.5}
+            ];
+
+            splitedBinary.forEach((item) => {
+
+                var data_points = [];
+
+                if (item == '0') {
+                    data_points = 
+                    [
+                        {x : points, y : 0.5},
+                        {x : (points + tax), y : 0.5},
+                        {x : (points + tax), y : 0},
+                        {x : (points + (tax * 2)), y : 0},
+                    ];
+                }
+                else {
+                    data_points = 
+                    [
+                        {x : points, y : 0},
+                        {x : (points + tax), y : 0},
+                        {x : (points + tax), y : 0.5},
+                        {x : (points + (tax * 2)), y : 0.5},
+                    ];
+                }
+
+                dPoints = dPoints.concat(data_points);
+                points += (tax * 2);
+            });
+
+            var chart = new CanvasJS.Chart("chartContainer", {
+                animationEnabled: true,
+                theme: "light2",
+                title: {
+                    text: "manchester graphic"
+                },
+                axisY: {
+                    includeZero: false
+                },
+                data: [{        
+                    type: "line",       
+                    dataPoints: dPoints
+                }]
+            });
+            chart.render();
+        };
+
+        window.conversor = {
+            'E': '01000101',
+            'C': '01000011',
+            'P': '01010000',
+            '7': '00110111',
+            '4': '00110100',
+            '2': '00110010',
+        };
+
+        window.word = 'ECP742';
+
+        window.convertToBinary = (word) => {
+            var splited = word.split('');
+
+            var binaryEncode = '';
+
+            splited.forEach((el) => {
+                binaryEncode += window.conversor[el];
+            });
+
+            return binaryEncode;
+        };
+
+    </script>
+</head>
+<body>
+    <div id="chartContainer" style="height: 370px; max-width: 100%; margin: 0px auto;"></div>
+</body>
+</html>
