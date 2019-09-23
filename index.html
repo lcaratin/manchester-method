@@ -3,39 +3,32 @@
     <script src="canvasjs.min.js"></script>
     <script>
         window.onload = () => {
-            var word = window.revert(window.word);
-            var binary = window.convertToBinary(word);
-            //var binary = '010011';
+            var word          = window.revert(window.word);
+            var binary        = window.convertToBinary(word);
             var splitedBinary = binary.split('');
-
-            var tax = ((1 / 64000) / 2);
-            var points = 0;
-
-            var dPoints = 
-            [
-                {x: 0, y: 0.5}
-            ];
+            var tax           = ((1 / 64000) / 2);
+            var points        = 0;
+            var dPoints       = [{x: 0, y: 1}];
 
             splitedBinary.forEach((item) => {
-
                 var data_points = [];
 
                 if (item == '0') {
                     data_points = 
                     [
-                        {x : points, y : 0.5},
-                        {x : (points + tax), y : 0.5},
-                        {x : (points + tax), y : 0},
-                        {x : (points + (tax * 2)), y : 0},
+                        {x : points,                y : 1},
+                        {x : (points + tax),        y : 1},
+                        {x : (points + tax),        y : -1},
+                        {x : (points + (tax * 2)),  y : -1},
                     ];
                 }
                 else {
                     data_points = 
                     [
-                        {x : points, y : 0},
-                        {x : (points + tax), y : 0},
-                        {x : (points + tax), y : 0.5},
-                        {x : (points + (tax * 2)), y : 0.5},
+                        {x : points,                y : -1},
+                        {x : (points + tax),        y : -1},
+                        {x : (points + tax),        y : 1},
+                        {x : (points + (tax * 2)),  y : 1},
                     ];
                 }
 
@@ -50,7 +43,13 @@
                     text: "manchester graphic"
                 },
                 axisY: {
-                    includeZero: false
+                    includeZero: false,
+                    title: 'amplitude'
+                },
+                axisX: {
+                    title: 'tempo',
+                    gridThickness: 1,
+                    gridColor: "orange"
                 },
                 data: [{        
                     type: "line",       
@@ -58,6 +57,10 @@
                 }]
             });
             chart.render();
+        };
+
+        window.revert = (word) => {
+            return word.split('').reverse().join('');
         };
 
         window.conversor = {
@@ -70,10 +73,6 @@
         };
 
         window.word = 'ECP742';
-
-        window.revert = (word) => {
-            return word.split('').reverse().join('');
-        };
 
         window.convertToBinary = (word) => {
             var splited = word.split('');
