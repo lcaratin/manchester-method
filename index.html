@@ -3,7 +3,8 @@
     <script src="canvasjs.min.js"></script>
     <script>
         window.onload = () => {
-            var binary = window.convertToBinary(window.word);
+            var word = window.revert(window.word);
+            var binary = window.convertToBinary(word);
             //var binary = '010011';
             var splitedBinary = binary.split('');
 
@@ -69,6 +70,10 @@
         };
 
         window.word = 'ECP742';
+
+        window.revert = (word) => {
+            return word.split('').reverse().join('');
+        };
 
         window.convertToBinary = (word) => {
             var splited = word.split('');
